@@ -58,7 +58,7 @@ export function TaskFormPage() {
         ></textarea>
         {errors.description && <span>description is required</span>}
 
-        <button>Save</button>
+        <button>{params.id ? 'Update' : 'Save'}</button>
       </form>
       {
         params.id && <button onClick={async () => {
