@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react"
 import { getAllTasks } from '../api/tasks.api'
 import { TaskCard } from "./TaskCard";
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 // import Chip from '@mui/material/Chip';
 // import { AdminPanelSettingsOutlined, CoPresentOutlined, SchoolOutlined } from '@mui/icons-material';
 import { Grid } from '@mui/material';
-import { renderDetailsButton, columns } from "./DataGrid";
 
 
 export function TaskList() {
