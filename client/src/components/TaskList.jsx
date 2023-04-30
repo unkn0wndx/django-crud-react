@@ -20,21 +20,10 @@ export function TaskList() {
     loadTasks();
   }, []);
 
-  return <div>
-
-    <Grid item xs={12} sx={{ height: 710, width: '100%', backgroundColor: '#FFFFFF', borderRadius: '10px', padding: '10px' }}>
-      <DataGrid
-        // localeText={localizedTextsMap}
-        components={{ Toolbar: GridToolbar }}
-        rows={tasks}
-        columns={columns}
-        pageSize={10}
-        sx={{ fontSize: '1em' }}
-        rowsPerPageOptions={[10]}
-        disableSelectionOnClick
-        disableColumnMenu
-        experimentalFeatures={{ newEditingApi: true }}
-      />
-    </Grid>
-  </div>;
+  return <Grid gap={2}>
+    {tasks.map((task) => (
+      <TaskCard key={task.id} task={task} />
+      ))}
+      </Grid>
+  ;
 }
