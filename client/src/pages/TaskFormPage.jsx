@@ -3,6 +3,8 @@ import { createTask, deleteTask, updateTask, getTask } from '../api/tasks.api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
+import { Input, Textarea, Button } from "@nextui-org/react";
+import { Selector } from '../components/Selector';
 
 export function TaskFormPage() {
 
@@ -29,6 +31,7 @@ export function TaskFormPage() {
           color: '#fff'
         }
       })
+      navigate('/tasks');
     }
   })
 
@@ -47,21 +50,27 @@ export function TaskFormPage() {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
-        <input type="text" placeholder="Title"
-          {...register("title", { required: true })}
-        />
-        {errors.title && <span>field is required</span>}
+      <Input bordered
+        label="Title"
+        placeholder={'Title'}
+        color="default"
+        {...register("title", { required: true })}
+      />
+      {errors.title && <span>field is required</span>}
 
-        <textarea rows="3" placeholder="Description"
-          {...register("description", { required: true })}
-        ></textarea>
-        {errors.description && <span>description is required</span>}
+      <Textarea bordered
+        color="default"
+        label="Description"
+        placeholder={'Description'}
+        {...register("description", { required: true })}
+      />
+      {errors.description && <span>description is required</span>}
 
-        <button>{params.id ? 'Update' : 'Save'}</button>
-      </form>
+      <Selector />
+
+      <Button onClick={onSubmit}>{params.id ? 'Update' : 'Save'}</Button>
       {
-        params.id && <button onClick={async () => {
+        params.id && <Button color="error" onClick={async () => {
           const accepted = window.confirm('are you sure?')
           if (accepted) {
             await deleteTask(params.id);
@@ -74,7 +83,7 @@ export function TaskFormPage() {
             })
             navigate('/tasks');
           }
-        }}>Delete</button>
+        }}>Delete</Button>
       }
     </>
   )
