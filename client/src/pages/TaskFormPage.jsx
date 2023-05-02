@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Input, Textarea, Button } from "@nextui-org/react";
-import { Selector } from '../components/Selector';
 
 export function TaskFormPage() {
 
@@ -66,11 +65,9 @@ export function TaskFormPage() {
       />
       {errors.description && <span>description is required</span>}
 
-      <Selector />
-
       <Button onClick={onSubmit}>{params.id ? 'Update' : 'Save'}</Button>
       {
-        params.id && <Button color="error" onClick={async () => {
+        params.id && <Button color="error" onPress={async () => {
           const accepted = window.confirm('are you sure?')
           if (accepted) {
             await deleteTask(params.id);

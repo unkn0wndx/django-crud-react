@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Card, Grid, Text, Button, Row } from "@nextui-org/react";
-import { Switch } from "@nextui-org/react";
-import { useForm } from 'react-hook-form';
+import { Card, Grid, Text, Button, Row, Checkbox, Switch } from "@nextui-org/react";
 import { updateTask } from '../api/tasks.api';
 import { toast } from 'react-hot-toast';
 
@@ -11,10 +9,10 @@ export function TaskCard({ task }) {
 
   const navigate = useNavigate();
 
-  const onSubmit = async ({ target }) => {
-    const data = { done: target.checked, title: task.title, description: task.description }
+  const onSubmit = async (status) => {
+    const data = { done: status, title: task.title, description: task.description }
     await updateTask(task.id, data);
-    toast.success(`Status has changed`, {
+    toast.success(`Task status has changed`, {
       // position: 'bottom-right',
       style: {
         background: '#101010',
@@ -45,9 +43,7 @@ export function TaskCard({ task }) {
                 {/*  <Button size="sm" color="warning" ghost >
                   DONE
                 </Button> */}
-                <Switch shadow color="success" checked={task.done} onChange={onSubmit}>
-                  Squared option
-                </Switch>
+                <Checkbox isRounded color="success" labelColor="success" size="xl" aria-label='' onChange={onSubmit} defaultSelected={task.done} />
 
                 <Button shadow rounded size="sm" onClick={() => {
                   navigate(`/tasks/${task.id}`)
