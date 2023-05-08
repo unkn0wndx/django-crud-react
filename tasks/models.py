@@ -1,10 +1,13 @@
 from django.db import models
 
 # Create your models here.
-    
+
+
 class Category(models.Model):
     title = models.CharField(max_length=200)
-    
+    color = models.CharField(max_length=200, blank=True)
+
+
 class Task(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
