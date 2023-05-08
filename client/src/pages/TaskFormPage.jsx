@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { createTask, deleteTask, updateTask, getTask } from '../api/tasks.api';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
-import { Input, Textarea, Button } from "@nextui-org/react";
+import { Input, Textarea, Button, Dropdown } from "@nextui-org/react";
 
 export function TaskFormPage() {
 
@@ -47,6 +47,12 @@ export function TaskFormPage() {
   }, [])
 
 
+  const [selected, setSelected] = useState(new Set(["text"]));
+  const selectedValue = useMemo(
+    () => Array.from(selected).join(", ").replaceAll("_", " "),
+    [selected]
+  );
+
   return (
     <>
       <Input bordered
@@ -64,6 +70,24 @@ export function TaskFormPage() {
         {...register("description", { required: true })}
       />
       {errors.description && <span>description is required</span>}
+
+      <Dropdown>
+        <Dropdown.Button flat color="default" css={{ tt: "capitalize" }}>
+          {selectedValue}
+        </Dropdown.Button>
+        <Dropdown.Menu
+          aria-label="Single selection actions"
+          color="primary"
+          disallowEmptySelection
+          selectionMode="single"
+          selectedKeys={selected}
+          onSelectionChange={setSelected}
+        >
+          <Dropdown.Item key="text" color="primary">Text</Dropdown.Item>
+          <Dropdown.Item key="number" color="error">Number</Dropdown.Item>
+          <Dropdown.Item key="date" color="success">Date</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
 
       <Button onClick={onSubmit}>{params.id ? 'Update' : 'Save'}</Button>
       {
