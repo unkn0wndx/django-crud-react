@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { Card, Grid, Text, Button, Row, Checkbox, Switch } from "@nextui-org/react";
+import { Card, Grid, Text, Button, Row, Checkbox, Badge } from "@nextui-org/react";
 import { updateTask } from '../api/tasks.api';
 import { toast } from 'react-hot-toast';
 
 export function TaskCard({ task }) {
 
-  const date = new Date(task.update_at).toString().substring(0, 24);
+  const date = new Date(task.updated).toString().substring(0, 24);
 
   const navigate = useNavigate();
 
@@ -36,13 +36,15 @@ export function TaskCard({ task }) {
             <Card.Divider />
             <Card.Body css={{ py: "$10" }}>
               <Text>{task.description}</Text>
+              <Grid xs={12} alignItems='center'>
+                <Badge color="primary" variant="dot" />
+                <Text css={{ ml: "$2" }}>Primary</Text>
+              </Grid>
+
             </Card.Body>
             <Card.Divider />
             <Card.Footer>
               <Row justify="space-around">
-                {/*  <Button size="sm" color="warning" ghost >
-                  DONE
-                </Button> */}
                 <Checkbox isRounded color="success" labelColor="success" size="xl" aria-label='' onChange={onSubmit} defaultSelected={task.done} />
 
                 <Button shadow rounded size="sm" onClick={() => {
