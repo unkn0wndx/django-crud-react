@@ -42,7 +42,7 @@ export function Navigation() {
         </Link>
 
         <Grid>
-          <Link to="/tasks-create"><Text h1 size={60}>Click to create a task</Text></Link>
+          <Link to="/tasks-create"><Text h1 size={60} color="primary">Click to create a task</Text></Link>
         </Grid>
       </Grid.Container>
       <Divider />
