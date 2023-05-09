@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Grid, Text, Button, Row, Checkbox, Badge } from "@nextui-org/react";
 import { updateTask } from '../api/tasks.api';
 import { toast } from 'react-hot-toast';
+import confetti from 'canvas-confetti';
 
 export function TaskCard({ task }) {
 
@@ -9,8 +10,21 @@ export function TaskCard({ task }) {
 
   const navigate = useNavigate();
 
+  const handleConfetti = () => {
+    confetti({
+      particleCount: 100,
+      startVelocity: 30,
+      spread: 360,
+    });
+  }
+
   const onSubmit = async (status) => {
-    const data = { done: status, title: task.title, description: task.description }
+    console.log(status)
+
+    status && handleConfetti();
+
+
+    const data = { done: status, title: task.title, description: task.description, category: task.category }
     await updateTask(task.id, data);
     toast.success(`Task status has changed`, {
       // position: 'bottom-right',
