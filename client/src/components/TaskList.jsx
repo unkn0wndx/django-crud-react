@@ -14,11 +14,16 @@ export function TaskList() {
     setTasks(res.data);
   }
 
+  // Se ejecuta cuando el componente se renderiza por primera vez
   useEffect(() => {
     loadTasks();
   }, []);
 
-  helper && loadTasks();
+  // Se ejecuta cuando el estado de 'helper' cambia
+  useEffect(() => {
+    loadTasks();
+  }, [helper]);
+
 
   return (
     <Grid.Container gap={2} justify="space-around">
