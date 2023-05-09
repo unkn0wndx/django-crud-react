@@ -19,11 +19,7 @@ export function TaskCard({ task }) {
   }
 
   const onSubmit = async (status) => {
-    console.log(status)
-
     status && handleConfetti();
-
-
     const data = { done: status, title: task.title, description: task.description, category: task.category }
     await updateTask(task.id, data);
     toast.success(`Task status has changed`, {
@@ -40,35 +36,43 @@ export function TaskCard({ task }) {
     <div style={{ background: '#101010' }}>
       <Grid.Container gap={2}>
         <Grid sm={12} md={5}>
-          <Card css={{ mw: "330px" }}>
+          <Card css={{ p: "$6", mw: "400px" }}>
             <Card.Header>
-              <Row justify="space-between">
-                <Text b>{task.title}</Text>
-                <Text>{date}</Text>
-              </Row>
+              <Checkbox isRounded color="success" labelColor="success" size="xl" aria-label='' onChange={onSubmit} defaultSelected={task.done} />
+              <Grid.Container css={{ pl: "$6" }}>
+                <Grid xs={12}>
+                  <Text h4 css={{ lineHeight: "$xs" }}>
+                    {task.title}
+                  </Text>
+                </Grid>
+                <Grid xs={12}>
+                  <Text css={{ color: "$accents8" }}>{date}</Text>
+                </Grid>
+              </Grid.Container>
             </Card.Header>
-            <Card.Divider />
-            <Card.Body css={{ py: "$10" }}>
-              <Text>{task.description}</Text>
-              <Grid xs={12} alignItems='center'>
-                <Badge color="primary" variant="dot" />
-                <Text css={{ ml: "$2" }}>Primary</Text>
-              </Grid>
-
+            <Card.Body css={{ py: "$2" }}>
+              <Text>
+                {task.description}
+              </Text>
             </Card.Body>
-            <Card.Divider />
             <Card.Footer>
               <Row justify="space-around">
-                <Checkbox isRounded color="success" labelColor="success" size="xl" aria-label='' onChange={onSubmit} defaultSelected={task.done} />
-
-                <Button shadow rounded size="sm" onClick={() => {
-                  navigate(`/tasks/${task.id}`)
-                }}>EDIT</Button>
+                <Grid xs={12}>
+                  <Badge color="success" variant="bordered" size="lg">
+                    Importante
+                  </Badge>
+                </Grid>
+                <Grid xs={12} alignItems='center'>
+                  <Button color="default" shadow rounded size="sm" onClick={() => {
+                    navigate(`/tasks/${task.id}`)
+                  }}>Edit</Button>
+                </Grid>
               </Row>
             </Card.Footer>
           </Card>
         </Grid>
       </Grid.Container>
+    
     </div>
   )
 }
