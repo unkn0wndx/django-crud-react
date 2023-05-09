@@ -1,27 +1,47 @@
 import { useEffect, useState } from "react"
 import { getAllTasks } from '../api/tasks.api'
 import { TaskCard } from "./TaskCard";
-// import Chip from '@mui/material/Chip';
-// import { AdminPanelSettingsOutlined, CoPresentOutlined, SchoolOutlined } from '@mui/icons-material';
-import { Grid } from '@mui/material';
-
+import { Grid, Text } from '@nextui-org/react';
 
 export function TaskList() {
 
   const [tasks, setTasks] = useState([])
+  const [helper, setHelper] = useState(false)
+
+  async function loadTasks() {
+    const res = await getAllTasks();
+    setHelper(false);
+    setTasks(res.data);
+  }
 
   useEffect(() => {
-    async function loadTasks() {
-      const res = await getAllTasks();
-      setTasks(res.data);
-    }
     loadTasks();
   }, []);
 
-  return <Grid gap={2}>
-    {tasks.map((task) => (
-      <TaskCard key={task.id} task={task} />
-      ))}
-      </Grid>
-  ;
+  helper && loadTasks();
+
+  return (
+    <Grid.Container gap={2} justify="space-around">
+
+      <Grid.Container xs={12} gap={2}>
+        <Grid xs={12} justify="center" css={{ p: "$6" }}>
+          <Text h3>Planned</Text>
+        </Grid>
+        {tasks.map((task) => (
+          !task.done && <Grid key={task.id} sm={12} md={6}><TaskCard task={task} setHelper={setHelper} /></Grid>
+        ))}
+      </Grid.Container>
+
+      <Grid.Container xs={12} gap={2}>
+        <Grid xs={12} justify="center" css={{ p: "$6" }}>
+          <Text h3>Done</Text>
+        </Grid>
+        {tasks.map((task) => (
+          task.done && <Grid key={task.id} sm={12} md={6}><TaskCard task={task} setHelper={setHelper} /></Grid>
+        ))}
+      </Grid.Container>
+
+    </Grid.Container>
+
+  )
 }
