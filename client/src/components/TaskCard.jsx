@@ -1,13 +1,24 @@
 import { useNavigate } from 'react-router-dom';
 import { Card, Grid, Text, Button, Row, Checkbox, Badge } from "@nextui-org/react";
-import { updateTask } from '../api/tasks.api';
+import { updateTask, getCategory } from '../api/tasks.api';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
+import { useState, useEffect } from 'react';
 
 export function TaskCard({ task, setHelper, categories }) {
 
-  const date = new Date(task.updated).toString().substring(0, 24);
+  const [category, setCategory] = useState([])
 
+  async function loadCategory() {
+    const res = await getCategory(task.category);
+    setCategory(res.data)
+  }
+
+  useEffect(() => {
+    loadCategory();
+  }, [])
+
+  const date = new Date(task.updated).toString().substring(0, 24);
   const navigate = useNavigate();
 
   const handleConfetti = () => {
@@ -54,11 +65,9 @@ export function TaskCard({ task, setHelper, categories }) {
       <Card.Footer>
         <Grid.Container justify="space-around">
           <Grid xs={6}>
-            {categories.map(({ id, title, color }) => (
-              id == task.category && <Badge color={color} variant="bordered" size="lg">
-                {title}
-              </Badge>
-            ))}
+            <Badge color={category.color} variant="bordered" size="lg">
+              {category.title}
+            </Badge>
           </Grid>
           <Grid xs={6}>
             <Button color="default" shadow rounded size="sm" onClick={() => {
