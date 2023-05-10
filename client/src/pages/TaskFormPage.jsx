@@ -1,17 +1,22 @@
 import { useForm } from 'react-hook-form';
-import { createTask, deleteTask, updateTask, getTask } from '../api/tasks.api';
+import { createTask, deleteTask, updateTask, getTask, getAllCategories, getCategory } from '../api/tasks.api';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { Input, Textarea, Button, Dropdown } from "@nextui-org/react";
+import { Input, Textarea, Button, Checkbox, Radio, Grid } from "@nextui-org/react";
 
 export function TaskFormPage() {
 
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm()
+  const [categories, setCategories] = useState([])
+  const { register, handleSubmit, formState: { errors }, setValue, getValues } = useForm()
+
   const navigate = useNavigate();
   const params = useParams()
 
+  const [selected, setSelected] = useState('5');
+
   const onSubmit = handleSubmit(async data => {
+    data.category = Number(selected)
     if (params.id) {
       await updateTask(params.id, data);
       toast.success('Tarea actualizada', {
@@ -34,78 +39,76 @@ export function TaskFormPage() {
     }
   })
 
+
   useEffect(() => {
     async function loadTask() {
+      const res = await getAllCategories();
+      setCategories(res.data)
       if (params.id) {
-        const { data: { title, description } } = await getTask(params.id)
+        const { data: { title, description, category } } = await getTask(params.id)
         setValue('title', title)
         setValue('description', description)
+        setValue('category', category)
+        setSelected(category.toString())
       }
     }
-
     loadTask();
   }, [])
 
-
-  const [selected, setSelected] = useState(new Set(["text"]));
-  const selectedValue = useMemo(
-    () => Array.from(selected).join(", ").replaceAll("_", " "),
-    [selected]
-  );
-
   return (
     <>
-      <Input bordered
-        label="Title"
-        placeholder={'Title'}
-        color="default"
-        {...register("title", { required: true })}
-      />
-      {errors.title && <span>field is required</span>}
+      <Grid.Container gap={2}>
+        <Grid.Container gap={2} xs={4}>
+          <Grid xs={12}>
+            <Input bordered
+              label="Title"
+              placeholder={'Title'}
+              color="default"
+              {...register("title", { required: true })}
+            />
+            {errors.title && <span>field is required</span>}
+          </Grid>
 
-      <Textarea bordered
-        color="default"
-        label="Description"
-        placeholder={'Description'}
-        {...register("description", { required: true })}
-      />
-      {errors.description && <span>description is required</span>}
+          <Grid xs={12}>
+            <Textarea bordered
+              color="default"
+              label="Description"
+              placeholder={'Description'}
+              {...register("description", { required: true })}
+            />
+            {errors.description && <span>description is required</span>}
+          </Grid>
+        </Grid.Container>
+        <Grid xs={6}>
+          <Radio.Group label="Category" value={selected} onChange={setSelected}>
+            {
+              categories.map(({ id, title, color }) => (
+                <Radio isSquared color={color} value={id.toString()}>{title}</Radio>
+              ))
+            }
+          </Radio.Group>
+        </Grid>
 
-      <Dropdown>
-        <Dropdown.Button flat color="default" css={{ tt: "capitalize" }}>
-          {selectedValue}
-        </Dropdown.Button>
-        <Dropdown.Menu
-          aria-label="Single selection actions"
-          color="primary"
-          disallowEmptySelection
-          selectionMode="single"
-          selectedKeys={selected}
-          onSelectionChange={setSelected}
-        >
-          <Dropdown.Item key="text" color="primary">Text</Dropdown.Item>
-          <Dropdown.Item key="number" color="error">Number</Dropdown.Item>
-          <Dropdown.Item key="date" color="success">Date</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-
-      <Button onClick={onSubmit}>{params.id ? 'Update' : 'Save'}</Button>
-      {
-        params.id && <Button color="error" onPress={async () => {
-          const accepted = window.confirm('are you sure?')
-          if (accepted) {
-            await deleteTask(params.id);
-            toast.success('Tarea eliminada', {
-              position: 'bottom-right',
-              style: {
-                background: '#101010',
-                color: '#fff'
-              }
-            })
-            navigate('/tasks');
-          }
-        }}>Delete</Button>
-      }
+        <Grid sm={6} xs={12}>
+          <Button onClick={onSubmit}>{params.id ? 'Update' : 'Save'}</Button>
+        </Grid>
+        {
+          params.id && <Grid sm={6} xs={12}><Button color="error" onPress={async () => {
+            const accepted = window.confirm('are you sure?')
+            if (accepted) {
+              await deleteTask(params.id);
+              toast.success('Tarea eliminada', {
+                position: 'bottom-right',
+                style: {
+                  background: '#101010',
+                  color: '#fff'
+                }
+              })
+              navigate('/tasks');
+            }
+          }}>Delete</Button></Grid>
+        }
+      </Grid.Container>
     </>
   )
 }
