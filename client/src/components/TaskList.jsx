@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
-import { getAllTasks, getAllCategories } from '../api/tasks.api'
+import { getAllTasks } from '../api/tasks.api'
 import { TaskCard } from "./TaskCard";
 import { Grid, Text } from '@nextui-org/react';
 
 export function TaskList() {
 
   const [tasks, setTasks] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [helper, setHelper] = useState(false);
 
   async function loadTasks() {
@@ -15,15 +14,9 @@ export function TaskList() {
     setTasks(res.data);
   }
 
-  async function loadCategories() {
-    const res = await getAllCategories();
-    setCategories(res.data)
-  }
-
   // Se ejecuta cuando el componente se renderiza por primera vez
   useEffect(() => {
     loadTasks();
-    loadCategories();
   }, []);
 
   // Se ejecuta cuando el estado de 'helper' cambia
@@ -40,7 +33,7 @@ export function TaskList() {
           <Text h3>Planned</Text>
         </Grid>
         {tasks.map((task) => (
-          !task.done && <Grid key={task.id} sm={12} md={6}><TaskCard task={task} setHelper={setHelper} categories={categories} /></Grid>
+          !task.done && <Grid key={task.id} sm={12} md={6}><TaskCard task={task} setHelper={setHelper} /></Grid>
         ))}
       </Grid.Container>
 
@@ -49,7 +42,7 @@ export function TaskList() {
           <Text h3>Done</Text>
         </Grid>
         {tasks.map((task) => (
-          task.done && <Grid key={task.id} sm={12} md={6}><TaskCard task={task} setHelper={setHelper} categories={categories} /></Grid>
+          task.done && <Grid key={task.id} sm={12} md={6}><TaskCard task={task} setHelper={setHelper} /></Grid>
         ))}
       </Grid.Container>
 
