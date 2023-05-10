@@ -7,6 +7,7 @@ const taskApi = axios.create({
 
 //Categories
 export const getAllCategories = () => taskApi.get('/categories/');
+export const getCategory = (id) => taskApi.get(`/categories/${id}/`);
 
 //Tasks
 export const getAllTasks = () => taskApi.get('/tasks/');
