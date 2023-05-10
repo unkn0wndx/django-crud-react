@@ -18,7 +18,8 @@ export function TaskCard({ task, setHelper, categories }) {
     loadCategory();
   }, [])
 
-  const date = new Date(task.updated).toString().substring(0, 24);
+  const created = new Date(task.created).toString().substring(4, 21);
+  const updated = new Date(task.updated).toString().substring(4, 21);
   const navigate = useNavigate();
 
   const handleConfetti = () => {
@@ -53,7 +54,10 @@ export function TaskCard({ task, setHelper, categories }) {
             </Text>
           </Grid>
           <Grid xs={12}>
-            <Text css={{ color: "$accents8" }}>{date}</Text>
+            <Text css={{ color: "$accents8" }}>Created at: {created}</Text>
+          </Grid>
+          <Grid xs={12}>
+            <Text css={{ color: "$accents8" }}>Updated at: {updated}</Text>
           </Grid>
         </Grid.Container>
       </Card.Header>
