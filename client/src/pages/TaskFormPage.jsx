@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
-import { createTask, deleteTask, updateTask, getTask, getAllCategories, getCategory } from '../api/tasks.api';
+import { createTask, deleteTask, updateTask, getTask, getAllCategories } from '../api/tasks.api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { Input, Textarea, Button, Checkbox, Radio, Grid } from "@nextui-org/react";
+import { Input, Textarea, Button, Radio, Grid } from "@nextui-org/react";
 
 export function TaskFormPage() {
 
@@ -19,7 +19,7 @@ export function TaskFormPage() {
     data.category = Number(selected)
     if (params.id) {
       await updateTask(params.id, data);
-      toast.success('Tarea actualizada', {
+      toast.success('Task updated', {
         position: 'bottom-right',
         style: {
           background: '#101010',
@@ -28,15 +28,15 @@ export function TaskFormPage() {
       })
     } else {
       await createTask(data);
-      toast.success('Tarea creada', {
+      toast.success('Task created', {
         position: 'bottom-right',
         style: {
           background: '#101010',
           color: '#fff'
         }
       })
-      navigate('/tasks');
     }
+    navigate('/tasks');
   })
 
 
