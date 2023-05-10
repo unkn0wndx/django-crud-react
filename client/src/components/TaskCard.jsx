@@ -4,7 +4,7 @@ import { updateTask } from '../api/tasks.api';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
 
-export function TaskCard({ task, setHelper }) {
+export function TaskCard({ task, setHelper, categories }) {
 
   const date = new Date(task.updated).toString().substring(0, 24);
 
@@ -54,9 +54,11 @@ export function TaskCard({ task, setHelper }) {
       <Card.Footer>
         <Grid.Container justify="space-around">
           <Grid xs={6}>
-            <Badge color="success" variant="bordered" size="lg">
-              Importante
-            </Badge>
+            {categories.map(({ id, title, color }) => (
+              id == task.category && <Badge color={color} variant="bordered" size="lg">
+                {title}
+              </Badge>
+            ))}
           </Grid>
           <Grid xs={6}>
             <Button color="default" shadow rounded size="sm" onClick={() => {
