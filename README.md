@@ -24,7 +24,7 @@ El titulo puede ser cambiado, pero el color **no**, ya que esta ligado a una lib
 Clone the project
 
 ```bash
-  git clone https://github.com/unkn0wndx/django-crud-react/tree/main
+  git clone https://github.com/unkn0wndx/django-crud-react.git
 ```
 
 Go to the project directory
