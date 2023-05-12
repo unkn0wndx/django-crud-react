@@ -33,6 +33,12 @@ Go to the project directory
   cd django-crud-react
 ```
 
+Activa el virtual environment 
+
+```bash
+  venv/Scripts/activate
+```
+
 Iniciar el servidor **backend**
 
 ```bash
