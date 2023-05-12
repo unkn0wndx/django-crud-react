@@ -13,7 +13,7 @@ export function TaskFormPage() {
   const navigate = useNavigate();
   const params = useParams()
 
-  const [selected, setSelected] = useState('5');
+  const [selected, setSelected] = useState('1');
 
   const onSubmit = handleSubmit(async data => {
     data.category = Number(selected)
