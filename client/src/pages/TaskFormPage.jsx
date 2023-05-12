@@ -66,7 +66,7 @@ export function TaskFormPage() {
               color="default"
               {...register("title", { required: true })}
             />
-            {errors.title && <span>field is required</span>}
+            {errors.title && <span>Title is required</span>}
           </Grid>
 
           <Grid xs={12}>
@@ -76,7 +76,7 @@ export function TaskFormPage() {
               placeholder={'Description'}
               {...register("description", { required: true })}
             />
-            {errors.description && <span>description is required</span>}
+            {errors.description && <span>Description is required</span>}
           </Grid>
         </Grid.Container>
         <Grid xs={6}>
@@ -94,7 +94,7 @@ export function TaskFormPage() {
         </Grid>
         {
           params.id && <Grid sm={6} xs={12}><Button color="error" onPress={async () => {
-            const accepted = window.confirm('are you sure?')
+            const accepted = window.confirm('Are you sure?')
             if (accepted) {
               await deleteTask(params.id);
               toast.success('Tarea eliminada', {
